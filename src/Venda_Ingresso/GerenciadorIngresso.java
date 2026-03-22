@@ -24,6 +24,7 @@ public class GerenciadorIngresso {
     public boolean comprarIngresso(Ingresso ingresso) {
         
         if (ingresso != null) {
+            System.out.println("TESTE");
             ingresso.setCodigo(++prox);
             ingressos.add(ingresso);//Adiciona um elemento ao final do ArrayList            
             return true;

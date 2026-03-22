@@ -40,7 +40,7 @@ public class TelaInicial extends JDialog {
         btnGerarRelatorio = new JButton("Gerar Relatório");
         
         btnComprar.addActionListener((e) -> {           
-           JanelaCadastroIngresso janelaCadastroIngresso = new JanelaCadastroIngresso();
+           JanelaCadastroIngresso janelaCadastroIngresso = new JanelaCadastroIngresso(gerenciador);
            janelaCadastroIngresso.setVisible(true); 
         });       
         

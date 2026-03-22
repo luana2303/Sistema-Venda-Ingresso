@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Junior
  */
 public class JanelaCadastroIngresso extends JDialog {
-    
+
     private DefaultTableModel modelo;
     private JPanel painelFundo;
     private JButton btnSalvar;
@@ -36,57 +36,61 @@ public class JanelaCadastroIngresso extends JDialog {
     private JTextField txtNome;
     private JTextField txtSetor;
     private JTextField txtQtde;
-    
+
     private String[] setores
-            = {"Amarelo","Azul","Branco","Verde"};
+            = {"Amarelo", "Azul", "Branco", "Verde"};
 
     private JComboBox<String> cbxSetores;
-    
+
     private String[] tiposTorcedor
             = {"Inteira", "Meia"};
 
     private JComboBox<String> cbxTipoTorcedor;
-
-    GerenciadorIngresso gerenciador = new GerenciadorIngresso();
     
+    private GerenciadorIngresso gerenciador;
+
     String setor = "";
     String tipoTorcedor = "";
-    
-        
-    public JanelaCadastroIngresso() {
-        criarComponentesInsercao();        
+
+    private int qtdverde = 30;
+    private int qtdamarelo = 60;
+    private int qtdazul = 100;
+    private int qtdbranco = 210;
+
+    public JanelaCadastroIngresso(GerenciadorIngresso gerenciador) {
+        this.gerenciador = gerenciador;
+        criarComponentesInsercao();
     }
 
-    private void limpar(){
+    private void limpar() {
         txtNome.setText("");
-        txtQtde.setText("");        
+        txtQtde.setText("");
     }
 
     private void criarComponentesInsercao() {
-        
-        
-        btnSalvar = new JButton("Salvar");        
-        btnVoltarTelaInicial  = new JButton("Voltar para Tela Inicial");
-        
+
+        btnSalvar = new JButton("Salvar");
+        btnVoltarTelaInicial = new JButton("Voltar para Tela Inicial");
+
         btnSalvar.addActionListener((e) -> {
-           comprarIngresso();
-        });        
-       
+            comprarIngresso();
+        });
+
         btnVoltarTelaInicial.addActionListener((e) -> {
             setVisible(false);
             new TelaInicial(this, true, gerenciador.getIngressos());
         });
-        
-        lblNome = new JLabel("Nome:");       
+
+        lblNome = new JLabel("Nome:");
         cbxTipoTorcedor = new JComboBox(tiposTorcedor);
         lblQtde = new JLabel("Quantidade:");
-        txtNome = new JTextField(10);        
+        txtNome = new JTextField(10);
         txtQtde = new JTextField(5);
         cbxSetores = new JComboBox(setores);
 
         painelFundo = new JPanel();
         painelFundo.add(lblNome);
-        painelFundo.add(txtNome);   
+        painelFundo.add(txtNome);
         painelFundo.add(cbxTipoTorcedor);
         painelFundo.add(lblQtde);
         painelFundo.add(txtQtde);
@@ -94,84 +98,108 @@ public class JanelaCadastroIngresso extends JDialog {
         painelFundo.add(btnSalvar);
         painelFundo.add(btnVoltarTelaInicial);
 
-        add(painelFundo);        
+        add(painelFundo);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);// Só fecha a janela(Esconde). Não fecha a aplicação(EXIT_ON_CLOSE)
         setLocationRelativeTo(null);
         pack();
         setVisible(true);
     }
-    
-    private void comprarIngresso() {        
+
+    private void comprarIngresso() {
         Ingresso ingresso = new Ingresso();
         double valorIngresso = 0.00;
-        
-        ingresso.setNome(txtNome.getText());          
-        
+        int quantidade = 0;
+
+        ingresso.setNome(txtNome.getText());
+
         setor = cbxSetores.getSelectedItem().toString();
-        
+
         // Em caso de alteracao, novo item eh adicionado ao atributo setor
-        cbxSetores.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED){   
-                    setor = cbxSetores.getSelectedItem().toString();                                     
-                }
-            }
-        });        
-        
-        ingresso.setSetor(setor);   
-        ingresso.setQuantidade(Integer.parseInt(txtQtde.getText())); 
-        
+//        cbxSetores.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                if (e.getStateChange() == ItemEvent.SELECTED) {
+//                    setor = cbxSetores.getSelectedItem().toString();
+//                }
+//            }
+//        });
+
+        ingresso.setSetor(setor);
+
+        quantidade = Integer.parseInt(txtQtde.getText());
+
+        boolean disponivel = false;
+
         // Identifica valores dos ingressos
-        if (setor.equalsIgnoreCase("Amarelo")){
-            valorIngresso = 180.00;            
-        }else{
-            if (setor.equalsIgnoreCase("Azul")){
+        if (setor.equalsIgnoreCase("Amarelo")) {
+            valorIngresso = 180.00;
+            if (quantidade <= qtdamarelo) {
+                disponivel = true;
+                qtdamarelo -= quantidade;
+            }
+        } else {
+            if (setor.equalsIgnoreCase("Azul")) {
                 valorIngresso = 100.00;
-            }else{
-                if (setor.equalsIgnoreCase("Branco")){
+                if (quantidade <= qtdazul) {
+                    disponivel = true;
+                    qtdazul -= quantidade;
+                }
+            } else {
+                if (setor.equalsIgnoreCase("Branco")) {
                     valorIngresso = 60.00;
-                }else{
-                    if (setor.equalsIgnoreCase("Verde")){
+                    if (quantidade <= qtdbranco) {
+                        disponivel = true;
+                        qtdbranco -= quantidade;
+                    }
+                } else {
+                    if (setor.equalsIgnoreCase("Verde")) {
                         valorIngresso = 350.00;
+                        if (quantidade <= qtdverde) {
+                            disponivel = true;
+                            qtdverde -= quantidade;
+                        }
                     }
                 }
             }
         }
-        
+
         tipoTorcedor = cbxTipoTorcedor.getSelectedItem().toString();
-        
+
         // Em caso de alteracao, novo item eh adicionado ao atributo setor
-        cbxSetores.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED){   
-                    tipoTorcedor = cbxTipoTorcedor.getSelectedItem().toString();                                     
-                }
-            }
-        });     
+//        cbxSetores.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                if (e.getStateChange() == ItemEvent.SELECTED) {
+//                    tipoTorcedor = cbxTipoTorcedor.getSelectedItem().toString();
+//                }
+//            }
+//        });
         
+        ingresso.setQuantidade(quantidade);
+
         // se for estudante ou aposentado, calcula meia entrada
-        if (tipoTorcedor.equalsIgnoreCase("Meia")){
-            valorIngresso = valorIngresso/2;
+        if (tipoTorcedor.equalsIgnoreCase("Meia")) {
+            valorIngresso = valorIngresso / 2;
         }
-        
-        ingresso.setValor(valorIngresso);        
-        
+
+        ingresso.setValor(valorIngresso);
+
         // calcula o valor total
         double valorTotal = ingresso.getValor() * ingresso.getQuantidade();
         ingresso.setValorTotal(valorTotal);
-        
+
         // captura a data e hora local da maquina
-        ingresso.setDataHora(LocalDateTime.now());            
+        ingresso.setDataHora(LocalDateTime.now());
+
         
-        if (gerenciador.comprarIngresso(ingresso)) {            
+
+        if (disponivel && gerenciador.comprarIngresso(ingresso)) {
             limpar();
             JOptionPane.showMessageDialog(null, "Ingresso comprado com sucesso!");
         } else {
             limpar();
             JOptionPane.showMessageDialog(null, "Ingressos esgotados! Por favor, selecione outro setor.");
-        }  
-        
-    }               
+        }
+
+    }
 }

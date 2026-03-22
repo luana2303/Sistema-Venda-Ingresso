@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Venda_Ingresso;
+package Venda_Ingresso.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -13,7 +14,10 @@ import java.util.Date;
  *
  * @author Junior
  */
-public class Ingresso {
+public class Ingresso implements Serializable{
+    
+    private static final long serialVersionUID = 1L;
+
     
     private int codigo;
     private String nome;

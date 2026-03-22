@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Venda_Ingresso;
+package Venda_Ingresso.ui;
 
+import Venda_Ingresso.services.GerenciadorIngresso;
+import Venda_Ingresso.entities.Ingresso;
+import Venda_Ingresso.services.GerenciadorArquivo;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -23,13 +27,16 @@ public class TelaInicial extends JDialog {
     ArrayList<Ingresso> ingressos;
      
     GerenciadorIngresso gerenciador = new GerenciadorIngresso();
+    
+    private static final String PATH = "/home/cauan/Downloads/VendaIngressos/ingressos.ser";
    
     
     public TelaInicial() {    
+        List<Ingresso> ingressos = GerenciadorArquivo.desserializar(PATH);
         criarComponentesTela();  
     }
     
-    public TelaInicial(JanelaCadastroIngresso cadastro, boolean isModal, ArrayList<Ingresso> ingressos) {
+    public TelaInicial(JanelaCadastroIngresso cadastro, boolean isModal, GerenciadorIngresso gerenciador) {
         super(cadastro, isModal);       
         this.ingressos = ingressos;
         criarComponentesTela();

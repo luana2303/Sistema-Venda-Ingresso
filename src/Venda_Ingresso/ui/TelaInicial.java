@@ -24,7 +24,7 @@ public class TelaInicial extends JDialog {
     private JButton btnComprar;
     private JButton btnGerarRelatorio;
     
-    ArrayList<Ingresso> ingressos;
+    List<Ingresso> ingressos;
      
     GerenciadorIngresso gerenciador = new GerenciadorIngresso();
     
@@ -32,13 +32,17 @@ public class TelaInicial extends JDialog {
    
     
     public TelaInicial() {    
-        List<Ingresso> ingressos = GerenciadorArquivo.desserializar(PATH);
+        this.ingressos = GerenciadorArquivo.desserializar(PATH);
+        if (this.ingressos != null) {
+            gerenciador.setIngressos(this.ingressos);
+        }
         criarComponentesTela();  
     }
     
     public TelaInicial(JanelaCadastroIngresso cadastro, boolean isModal, GerenciadorIngresso gerenciador) {
         super(cadastro, isModal);       
-        this.ingressos = ingressos;
+        this.gerenciador = gerenciador;
+        this.ingressos = gerenciador.getIngressos();
         criarComponentesTela();
     } 
     

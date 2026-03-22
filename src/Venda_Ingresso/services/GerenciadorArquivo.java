@@ -24,6 +24,7 @@ public class GerenciadorArquivo {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))) {
 
             oos.writeObject(ingressos);
+            sucesso = true;
 
         } catch (IOException e) {
             System.out.println("Erro ao salvar arquivo: " + e.getMessage());

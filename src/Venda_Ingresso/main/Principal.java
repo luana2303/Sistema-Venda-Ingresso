@@ -6,7 +6,6 @@
 package Venda_Ingresso.main;
 
 import Venda_Ingresso.ui.TelaInicial;
-import Venda_Ingresso.ui.TelaInicial;
 
 /**
  *

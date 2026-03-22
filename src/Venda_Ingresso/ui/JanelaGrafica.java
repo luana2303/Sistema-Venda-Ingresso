@@ -8,6 +8,7 @@ package Venda_Ingresso.ui;
 import Venda_Ingresso.services.GerenciadorIngresso;
 import Venda_Ingresso.entities.Ingresso;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -87,7 +88,7 @@ class JanelaGrafica extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    void carregarDados(DefaultTableModel modelo, ArrayList<Ingresso> ingressos) {
+    void carregarDados(DefaultTableModel modelo, List<Ingresso> ingressos) {
         modelo.setNumRows(0);//Seta o número de colunas - Limpa a tabela
 
         ingressos.forEach(c -> { //lambda
@@ -107,7 +108,7 @@ class JanelaGrafica extends JDialog {
         return gerenciador;
     }
 
-    public void imprimirRelatorio(ArrayList<Ingresso> ingressos) {
+    public void imprimirRelatorio(List<Ingresso> ingressos) {
         if (ingressos == null || ingressos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum ingresso cadastrado..");
             return;
